@@ -1,0 +1,33 @@
+<html>
+<head>
+<title>Chat</title>
+</head>
+<body>
+Enter Chat and press enter
+<div><input id=input placeholder=you-chat-here /></div>
+
+Chat Output
+<div id=box></div>
+
+<script src=https://cdn.pubnub.com/sdk/javascript/pubnub.4.0.11.min.js></script>
+<script>
+	(function()
+		{
+		  var pubnub = new PubNub({ publishKey : 'pub-c-765a20e6-84a2-4b7a-abfa-6618f5bc816d', subscribeKey : 'sub-c-4ac71ec0-3546-11e7-b860-02ee2ddab7fe' });
+		  function $(id) 
+			{ return document.getElementById(id); }
+		  var box = $('box'), input = $('input'), channel = 'anything';
+		  pubnub.addListener({
+								message: function(obj) {
+								box.innerHTML = (''+obj.message).replace( /[<>]/g, '' ) + '<br>' + box.innerHTML
+							}});
+		  pubnub.subscribe({channels:[channel]});
+		  input.addEventListener('keyup', function(e) {
+			  if ((e.keyCode || e.charCode) === 13) {
+				pubnub.publish({channel : channel,message : input.value,x : (input.value='')});
+			}
+		  });
+	})();
+</script>
+</body>
+</html>
