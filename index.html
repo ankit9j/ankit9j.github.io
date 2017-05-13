@@ -13,10 +13,137 @@
 
   </head>
   <body>
-    <h1>dp</h1>
+    <!-- Nav Bar Starts -->
+	
+	<nav class="navbar navbar-default">
+	  <div class="container">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+		  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>
+		  <a class="navbar-brand" href="#">dp</a>
+		</div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
+		  <ul class="nav navbar-nav">
+			<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+			<li><a href="#">Link</a></li>
+			<li class="dropdown">
+			  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+			  <ul class="dropdown-menu">
+				<li><a href="#">Action</a></li>
+				<li><a href="#">Another action</a></li>
+				<li><a href="#">Something else here</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Separated link</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">One more separated link</a></li>
+			  </ul>
+			</li>
+		  </ul>
+		  <form class="navbar-form navbar-left">
+			<div class="form-group">
+			  <input type="text" class="form-control" placeholder="Search">
+			</div>
+			<button type="submit" class="btn btn-default">Submit</button>
+		  </form>
+		  <ul class="nav navbar-nav navbar-right">
+			<li class="dropdown">
+			  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+			  <ul class="dropdown-menu">
+				<li><a href="#">Action</a></li>
+				<li><a href="#">Another action</a></li>
+				<li><a href="#">Something else here</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Separated link</a></li>
+			  </ul>
+			</li>
+		  </ul>
+		</div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+	
+	
+    <!-- Nav Bar Over-->
+	
+	<div class="container">
+	
+		<div id="entries">
+		</div>
+	
+		<form>
+			<div class="form-group">
+			  <label for="input-name" class="col-2 col-form-label">Name</label>
+			  <div class="col-10">
+				<input class="form-control" type="text" placeholder="Your name please" id="input-name">
+			  </div>
+			</div>
+			<div class="form-group">
+			  <label for="input-email" class="col-2 col-form-label">Email</label>
+			  <div class="col-10">
+				<input class="form-control" type="email" placeholder="your@email.com" id="input-email">
+			  </div>
+			</div>
+			<div class="form-group">
+			  <label for="input-DOB" class="col-2 col-form-label">Date of birth</label>
+			  <div class="col-10">
+				<input class="form-control" type="date" id="input-DOB">
+			  </div>
+			</div>
+			<div class="col-1">
+				<center><button type="submit" id='submitButton' class="btn btn-default">Submit</button> </<center>
+			</div>
+		</form>
+	</div>
+	 
+	 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<script>
+		var API_URL='https://tvgefhwwbb.execute-api.ap-south-1.amazonaws.com/dev/users';
+		$(document).ready(function()
+								{
+									$.ajax({
+												type: 'GET',
+												url: API_URL,
+												success: function(data){
+																			$('#entries').html('');
+																			data.Items.forEach(function(getName){
+																													$('#entries').append('<tr><td>'+getName.name+"<td>"+getName.email+"<td>"+getName.dob+'</tr>');
+																												}
+																								
+																								);
+																		}
+											});
+								}
+						);
+		$('#submitButton').click(function()
+								{
+									$.ajax({
+												type: 'POST',
+												url: API_URL,
+//												data: JSON.stringify($("#userdataForm").serializeArray()),
+												data: JSON.stringify({
+																		"input-name": $('#input-name').val(),
+																		"input-email": $('#input-email').val(),
+																		"input-DOB": $('#input-DOB').val()
+																	 }),
+												contentType: "application/json",
+												success: function(data){
+																		location.reload();
+																	}
+											
+											
+											});
+									return false;
+		
+								});
+	</script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="res/js/bootstrap.min.js"></script>
   </body>
